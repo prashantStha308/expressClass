@@ -3,6 +3,7 @@ import multer from "multer";
 const profileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./src/storage");
+        // cb( Error , value );
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname );

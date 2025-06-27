@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import User from "../models/user.js";
+import fs from "fs";
 
 export const createUser = async (req, res) => {
     try {
         const body = req.body;
         const file = req.file;
-        console.log(file);
 
         if (!body.name || !body.email || !body.password) {
             throw new Error("Required Fields not filled");
@@ -16,12 +16,14 @@ export const createUser = async (req, res) => {
         }
 
         const filePath = file.path;
+        console.log(filePath);
 
         const newUser = await User.create({
             name: body.name,
             email: body.email,
             password: body.password,
             profilePicture: filePath.replace(/^src/, "")
+            // "/storage/1751040958305pngwing.com.png"
         })
 
         if (!newUser) {
@@ -96,6 +98,14 @@ export const deleteUserById = async (req, res) => {
         }
 
         const user = await User.findByIdAndDelete(id);
+
+        fs.unlink( "src" + user.profilePicture , (err) => {
+            if (err) {
+                console.log("Error deleting file: ", err);
+            } else {
+                console.log("Deleted File SUccessfully");
+            }
+        });
 
         res.status(200).json({
             success: true,

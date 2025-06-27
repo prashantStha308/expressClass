@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 const __dirname = path.resolve();
+console.log(__dirname);
 app.use('/storage', express.static(path.join(__dirname, 'src', 'storage')));
 
 app.use('/user', userRouter);

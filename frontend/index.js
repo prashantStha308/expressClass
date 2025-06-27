@@ -1,6 +1,7 @@
-document.addEventListener('DOMContentLoaded' , async ()=>{
-    const baseUrl = "http://localhost:5000";
-    console.log("dom content loaded");
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    const apiUrl = "http://localhost:5000";
+
     const form = document.getElementById('createForm');
 
     const handleSubmit = async(e)=>{
@@ -10,10 +11,11 @@ document.addEventListener('DOMContentLoaded' , async ()=>{
         const formData = new FormData(e.target);
 
         try {
-            const res = await axios.post(`${baseUrl}/user`, formData)
+            const res = await axios.post(`${apiUrl}/user`, formData);
 
             const data = res.data;
             console.log(data);
+            
             if(!data?.success ){
                 throw new Error(data?.message);
             }else{
@@ -29,15 +31,16 @@ document.addEventListener('DOMContentLoaded' , async ()=>{
     
     const renderImages = async() => {
         try {
-            const res = await axios.get(`${baseUrl}/user`);
+            const res = await axios.get(`${apiUrl}/user`);
             
             const data = res.data.data;
+            console.log(data);
 
             const div = document.createElement('div');
 
             for (const user of data) {
                 const img = document.createElement('img');
-                img.src = baseUrl + (user.profilePicture.startsWith('/') ? user.profilePicture : '/' + user.profilePicture);
+                img.src = apiUrl + user.profilePicture;
                 img.style.width = "50%";
 
                 div.appendChild(img);
