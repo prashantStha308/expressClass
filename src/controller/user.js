@@ -125,10 +125,10 @@ export const deleteUserById = async (req, res) => {
 
 export const updateUserById = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { id } = req.params;
         const body = req.body
 
-        if (!mongoose.Types.ObjectId(userId)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             throw new Error("Invalid ID");
         }
 
@@ -136,7 +136,7 @@ export const updateUserById = async (req, res) => {
             throw new Error("Required Fields not filled");
         }
 
-        const user = await User.findByIdAndUpdate(userId, newData);
+        const user = await User.findByIdAndUpdate(id, body);
 
         user.save();
 
@@ -147,7 +147,7 @@ export const updateUserById = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({
             success: false,
             message: error.message || "Failed to Create User"
